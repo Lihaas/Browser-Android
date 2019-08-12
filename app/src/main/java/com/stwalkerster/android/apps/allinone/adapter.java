@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.webkit.WebChromeClient;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -18,6 +21,7 @@ import java.util.List;
 public class adapter extends RecyclerView.Adapter<adapter.viewHolder> {
     List<list> my_list;
     Context context;
+    boolean open;
 
     public  adapter(List<list> my_list,Context context){
         this.context = context;
@@ -42,10 +46,51 @@ public class adapter extends RecyclerView.Adapter<adapter.viewHolder> {
                     @Override
                     public void onClick(View view) {
                         String ss = listss.getUrll();
-                        Intent t = new Intent(context,web.class);
-                        t.putExtra("Url",ss);
-                        Toast.makeText(context, ss, Toast.LENGTH_SHORT).show();
-                        context.startActivity(t);
+
+                        if(ss.equals("https://www.whatsapp.com")){
+                            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.whatsapp");
+                            if (launchIntent != null) {
+                                context.startActivity(launchIntent);
+                            }
+                            else {
+                                open = true;
+                            }
+                        }
+                        if(ss.equals("https://Www.chrome.com")){
+                            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.android.chrome");
+                            if (launchIntent != null) {
+                                context.startActivity(launchIntent);           }
+                            else {
+                                open = true;
+                            }
+                        }
+                        if(ss.equals("https://www.youtube.com")){
+                            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.google.android.youtube");
+                            if (launchIntent != null) {
+                                context.startActivity(launchIntent);
+                            }
+                            else {
+                                open = true;
+                            }
+                        }
+
+                        else if(ss!="https://www.whatsapp.com" && ss!="https://Www.chrome.com" && ss!="https://www.youtube.com"|| open){
+                            open = false;
+                            Intent t = new Intent(context,web.class);
+                            t.putExtra("Url",ss);
+                            context.startActivity(t);
+                        }
+
+
+
+
+
+
+
+
+
+
+
                     }
                 });
     }
